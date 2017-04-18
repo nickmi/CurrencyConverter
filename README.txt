@@ -22,7 +22,7 @@ README
 	
 	Contact
 	
-		If you have questions problems or suggestions, please contact nmich(at)hushmail.com
+		If you have questions problems or suggestions, please contact me.
 		
 		
 		
@@ -43,7 +43,7 @@ README
 		The software requires an active internet connection to work.
 		
 		
-	TEAM 36 UoP
+	nickmi
 	
 	
 	
