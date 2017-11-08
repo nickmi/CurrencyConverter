@@ -43,7 +43,7 @@ README
 		The software requires an active internet connection to work.
 		
 		
-	nickmi
+	nickmi the dante of life 
 	
 	
 	
