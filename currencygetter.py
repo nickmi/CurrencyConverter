@@ -1,5 +1,7 @@
-
 import requests
+import urllib3
+import json
+import time
 
 class CurrencyGetter(object):
     
@@ -10,7 +12,14 @@ class CurrencyGetter(object):
         self.time2=time2
         self.analogies=analogies
 
-
+    def bitcoinPrice(self):
+        url="https://api.coindesk.com/v1/bpi/currentprice.json"
+        
+        r = requests.get(url)
+        btcVSeuro = r.json()['bpi']['EUR']['rate_float']
+        print (btcVSeuro)
+        return btcVSeuro
+    
     def UpdateCurrency(self):
 
         r = requests.get('http://www.ecb.int/stats/eurofxref/eurofxref-daily.xml', stream=True)
@@ -45,5 +54,8 @@ class CurrencyGetter(object):
         converted2 = userinput / currencyvalue
         return (converted,converted2)
         
-x = CurrencyGetter()
-x.UpdateCurrency()
+
+# x=CurrencyGetter()
+# while True:
+#     x.bitcoinPrice()
+#     time.sleep(10)
