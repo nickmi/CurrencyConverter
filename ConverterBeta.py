@@ -2,7 +2,13 @@ import wx
 import requests
 from currencygetter import CurrencyGetter
 
+
+
 class GUI(wx.Frame,object):
+
+    global Logic 
+    Logic = CurrencyGetter()
+
     
     def __init__(self, *args, **kw):
         super(GUI, self).__init__(*args, **kw)
@@ -14,14 +20,13 @@ class GUI(wx.Frame,object):
         self.conversionPresenter2=wx.TextCtrl()
         self.valueToConvert=wx.TextCtrl()
         self.InitUI()
-        self.Logic= CurrencyGetter()
-        self.Logic.UpdateCurrency()
 
     def InitUI(self):
         pnl = wx.Panel(self)
         wx.OK
-        testa=CurrencyGetter().getCurrencyNameList()
-        lastUpdate=CurrencyGetter().time2[0]
+        Logic.UpdateCurrency()
+        testa=Logic.getCurrencyNameList()
+        lastUpdate=Logic.time2[0]
 
         wx.ComboBox(pnl, pos=(135, 48), choices=["EUR"], style=wx.CB_READONLY, size=(290, 25))
         cb2 = wx.ComboBox(pnl, pos=(135, 75), choices=testa, style=wx.CB_READONLY, size=(290, 25))
@@ -51,24 +56,27 @@ class GUI(wx.Frame,object):
         # εδώ συνδέουμε τα διάφορα κουτιά(combobox,text,button) εφόσον ενεργοποιηθούν(πχ, να πληκτρολογηθεί κάτι από τον χρήστη, είτε να πατηθεί) με διάφορες συναρτήσεις που επιθυμούμε
         cb2.Bind(wx.EVT_COMBOBOX, self.OnSelect)
         self.valueToConvert.Bind(wx.EVT_TEXT, self.OnSelect2)
+        # self.valueToConvert.Bind(wx.EV, self.OnSelect2)
         cb5.Bind(wx.EVT_BUTTON, self.OnSelect3)
         cb6.Bind(wx.EVT_BUTTON, self.OnSelect4)
         # εδώ βλέπουμε της συναρτήσεις που καλούνται από την σύνδεση γραφικού περιβάλλοντος με των κώδικα
 
     def OnSelect(self, e):
         i = e.GetString()
-        CurrencyValue = self.Logic.analogiesDict()[i]
+        CurrencyValue = Logic.analogiesDict()[i]
         self.currencyname = i
         self.currencyvalue = float(CurrencyValue)
 
     def OnSelect2(self, e):
-
         self.userinput = float(e.GetString())
+        converterCUrrencyTuple=Logic.convertTheCurrency(self.userinput,self.currencyvalue)
+        self.conversionPresenter.SetValue(str(self.userinput) + " EUR = " + str(converterCUrrencyTuple[0]) + " " + self.currencyname + " \n")
+        self.conversionPresenter2.SetValue(str( self.userinput) + " " + self.currencyname + '= ' + str(round(converterCUrrencyTuple[1], 4)) + " " + "EUR")
 
     def OnSelect3(self, e):
-        converterCUrrencyTuple=self.Logic.convertTheCurrency(self.userinput,self.currencyvalue)
+        converterCUrrencyTuple=Logic.convertTheCurrency(self.userinput,self.currencyvalue)
         self.conversionPresenter.SetValue(str(self.userinput) + " EUR = " + str(converterCUrrencyTuple[0]) + " " + self.currencyname + " \n")
-        self.conversionPresenter2.SetValue(str( self.userinput) + " " + self.currencyname + ' = ' + str(round(converterCUrrencyTuple[1], 4)) + " " + "EUR")
+        self.conversionPresenter2.SetValue(str( self.userinput) + "  " + self.currencyname + ' = ' + str(round(converterCUrrencyTuple[1], 4)) + " " + "EUR")
 
     def OnSelect4(self, e):
         self.conversionPresenter.Clear()
